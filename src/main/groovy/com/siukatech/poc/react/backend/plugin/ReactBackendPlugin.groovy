@@ -34,8 +34,11 @@ class ReactBackendPlugin implements Plugin<Project> {
     public static String SPRING_SECURITY_VERSION = ReactBackendUtil.extractSpringSecurityVersion()
     public static String OPENAPI_GENERATOR_VERSION = ReactBackendUtil.extractOpenapiGeneratorVersion()
 
-    private PluginHandlerManager pluginHandlerManager = new PluginHandlerManager();
+    private PluginHandlerManager pluginHandlerManager;
 
+    ReactBackendPlugin() {
+        pluginHandlerManager = new PluginHandlerManager()
+    }
 
     @Override
     void apply(Project project) {
