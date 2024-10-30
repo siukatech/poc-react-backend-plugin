@@ -12,7 +12,7 @@ import org.openapitools.generator.gradle.plugin.tasks.GenerateTask
 class OpenApiGeneratorPluginHandler extends AbstractPluginHandler {
     @Override
     void handle(Project project, String buildDir, ReactBackendExtension reactBackendConfig) {
-        println("handle - OpenApiGeneratorPluginHandler")
+//        println("handle - OpenApiGeneratorPluginHandler")
 
         // Use withType to associate with OpenApiGeneratorPlugin
         // Update the config of openApiGenerate when OpenApiGeneratorPlugin's GenerateTask is applied

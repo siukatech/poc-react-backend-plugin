@@ -1,6 +1,8 @@
 package com.siukatech.poc.react.backend.plugin.handler
 
 import com.siukatech.poc.react.backend.plugin.ReactBackendExtension
+import com.siukatech.poc.react.backend.plugin.ReactBackendPlugin
+import com.siukatech.poc.react.backend.plugin.task.BuildInfoTask
 import org.gradle.api.Action
 import org.gradle.api.ActionConfiguration
 import org.gradle.api.Project
@@ -14,28 +16,50 @@ import org.gradle.api.artifacts.repositories.MavenRepositoryContentDescriptor
 import org.gradle.api.artifacts.repositories.PasswordCredentials
 import org.gradle.api.artifacts.repositories.RepositoryContentDescriptor
 import org.gradle.api.credentials.Credentials
+import org.gradle.api.logging.Logger
+import org.gradle.api.plugins.JavaPlugin
+import org.gradle.language.jvm.tasks.ProcessResources
 
 class MyPluginHandler extends AbstractPluginHandler {
 
-    public static String PLUGIN_GROUP = "react-backend-plugin"
-
     @Override
     void handle(Project project, String buildDir, ReactBackendExtension reactBackendConfig) {
-        println("handle - MyPluginHandler")
+        Logger log = project.getLogger()
+//        println("handle - MyPluginHandler")
 
         project.tasks.register("printDebugInfo", Task) {
-            group = PLUGIN_GROUP
+            group = ReactBackendPlugin.PLUGIN_GROUP
             doLast {
 //                ReactBackendExtension reactBackendConfig = project.extensions.findByName(ReactBackendExtension.EXTENSION_NAME)
-                println "reactBackendConfig.specUri: [${reactBackendConfig.specUri}]"
-                println "reactBackendConfig.packageRoot: [${reactBackendConfig.packageRoot}]"
-                println "reactBackendConfig.schemaMappingsMap: [${reactBackendConfig.schemaMappingsMap}]"
+                log.debug "reactBackendConfig.specUri: [${reactBackendConfig.specUri}]"
+                log.debug "reactBackendConfig.packageRoot: [${reactBackendConfig.packageRoot}]"
+                log.debug "reactBackendConfig.schemaMappingsMap: [${reactBackendConfig.schemaMappingsMap}]"
             }
+        }
+
+        log.debug("handle - register - BuildInfoTask")
+        project.tasks.register(BuildInfoTask.MY_TASK_NAME, BuildInfoTask) {
+//            BuildInfoTask buildInfoTask = it
+//            dependsOn(processResources)
+//            Task classesTask = project.tasks.findByName(JavaPlugin.CLASSES_TASK_NAME)
+//            dependsOn(classesTask)
+            ProcessResources processResources = project.tasks.findByName(JavaPlugin.PROCESS_RESOURCES_TASK_NAME)
+//            log.debug "register - buildInfoTask - processResources: [${processResources}]"
+//            println "register - buildInfoTask - processResources: [${processResources}]"
+            dependsOn(processResources)
+//            BuildInfoTask buildInfoTask = project.tasks.findByName(MY_TASK_NAME)
+//            project.tasks.named(JavaPlugin.CLASSES_TASK_NAME) {
+//                dependsOn(buildInfoTask)
+//            }
+        }
+        BuildInfoTask buildInfoTask = project.tasks.findByName(BuildInfoTask.MY_TASK_NAME)
+        project.tasks.named(JavaPlugin.CLASSES_TASK_NAME) {
+            dependsOn(buildInfoTask)
         }
 
 //        if (project.hasProperty("platformSnapshotUri")) {
 //            String platformSnapshotUri = project.property("platformSnapshotUri") as String
-//            println("handle - platformSnapshotUri: [${platformSnapshotUri}]")
+//            log.debug("handle - platformSnapshotUri: [${platformSnapshotUri}]")
 ////            project.repositories.add({
 ////                name = 'platformSnapshot'
 ////                allowInsecureProtocol = true

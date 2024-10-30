@@ -9,7 +9,7 @@ import org.springframework.boot.gradle.tasks.run.BootRun
 class SpringBootPluginHandler extends AbstractPluginHandler {
     @Override
     void handle(Project project, String buildDir, ReactBackendExtension reactBackendConfig) {
-        println("handle - SpringBootPluginHandler")
+//        println("handle - SpringBootPluginHandler")
 
         // Use withType to associate with SpringBootPlugin
         // Update the config of bootJar when SpringBootPlugin's BootJar is applied
@@ -26,12 +26,12 @@ class SpringBootPluginHandler extends AbstractPluginHandler {
             }
 
             project.tasks.named("bootRun", BootRun) {
-                println("handle - bootRun - System.getenv: [" + System.getenv("jvmArgs") + "]")
-                println("handle - bootRun - System.getpropertu: [" + System.getProperty("jvmArgs") + "]")
+//                println("handle - bootRun - System.getenv: [" + System.getenv("jvmArgs") + "]")
+//                println("handle - bootRun - System.getpropertu: [" + System.getProperty("jvmArgs") + "]")
 //                def jvmArgsStr = System.getenv("jvmArgs")
                 def jvmArgsStr = System.getProperty("jvmArgs")
                 def jvmArgsList = jvmArgsStr == null ? [] : jvmArgsStr.split('\\s+') as List
-                println("handle - bootRun - jvmArgsStr: [" + jvmArgsStr + "], jvmArgsList: [" + jvmArgsList + "]")
+//                println("handle - bootRun - jvmArgsStr: [" + jvmArgsStr + "], jvmArgsList: [" + jvmArgsList + "]")
                 jvmArgs(
 //                    ["-Duser.timezone=UTC"]
                         jvmArgsList

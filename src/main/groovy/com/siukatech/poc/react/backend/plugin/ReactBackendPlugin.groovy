@@ -5,6 +5,7 @@ import com.siukatech.poc.react.backend.plugin.handler.PluginHandlerManager
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.invocation.Gradle
+import org.gradle.api.logging.Logger
 import org.gradle.api.plugins.ExtensionAware
 import org.gradle.api.plugins.ExtraPropertiesExtension
 import org.gradle.api.plugins.GroovyPlugin
@@ -21,6 +22,8 @@ import org.springframework.boot.gradle.plugin.SpringBootPlugin
  */
 class ReactBackendPlugin implements Plugin<Project> {
 
+    public static String PLUGIN_GROUP = "react-backend-plugin"
+
     public static List<String> PLUGIN_SIMPLE_NAMES = List.of(
             JavaPlugin.simpleName
             , GroovyPlugin.simpleName
@@ -36,12 +39,10 @@ class ReactBackendPlugin implements Plugin<Project> {
 
     private PluginHandlerManager pluginHandlerManager;
 
-    ReactBackendPlugin() {
-        pluginHandlerManager = new PluginHandlerManager()
-    }
-
     @Override
     void apply(Project project) {
+        project.plugins.apply(SpringBootPlugin)
+        pluginHandlerManager = new PluginHandlerManager(project)
 
         // Register the extension (config, obsolete: convention) for this plugin
         project.extensions.create(ReactBackendExtension.EXTENSION_NAME, ReactBackendExtension)
@@ -264,59 +265,61 @@ class ReactBackendPlugin implements Plugin<Project> {
     }
 
     void print_project_ext(Project project) {
-        println("print_project_ext - project.name: [${project.name}]")
+        Logger log = project.getLogger();
+        log.debug("print_project_ext - project.name: [${project.name}]")
         ExtraPropertiesExtension extraPropertiesExtension1 = project.extensions.findByType(ExtraPropertiesExtension.class)
 //        ExtraPropertiesExtension extraPropertiesExtension1 = project.extensions.getExtraProperties()
 ////        ExtraPropertiesExtension extraPropertiesExtension1 = project.extensions.findByName("ext")
-        println("print_project_ext - extraPropertiesExtension1.springBootVersion: [${extraPropertiesExtension1.has("springBootVersion")}]")
-        println("print_project_ext - extraPropertiesExtension1.springSecurityVersion: [${extraPropertiesExtension1.has("springSecurityVersion")}]")
-        println("print_project_ext - extraPropertiesExtension1.platformSnapshotUri: [${extraPropertiesExtension1.has("platformSnapshotUri")}]")
+        log.debug("print_project_ext - extraPropertiesExtension1.springBootVersion: [${extraPropertiesExtension1.has("springBootVersion")}]")
+        log.debug("print_project_ext - extraPropertiesExtension1.springSecurityVersion: [${extraPropertiesExtension1.has("springSecurityVersion")}]")
+        log.debug("print_project_ext - extraPropertiesExtension1.platformSnapshotUri: [${extraPropertiesExtension1.has("platformSnapshotUri")}]")
 
-        println("print_project_ext - project.properties.springBootVersion: [${project.properties.hasProperty("springBootVersion")}]")
-        println("print_project_ext - project.properties.springSecurityVersion: [${project.properties.hasProperty("springSecurityVersion")}]")
+        log.debug("print_project_ext - project.properties.springBootVersion: [${project.properties.hasProperty("springBootVersion")}]")
+        log.debug("print_project_ext - project.properties.springSecurityVersion: [${project.properties.hasProperty("springSecurityVersion")}]")
 
-        println("print_project_ext - project.properties[springBootVersion]: [${project.properties["springBootVersion"]}]")
+        log.debug("print_project_ext - project.properties[springBootVersion]: [${project.properties["springBootVersion"]}]")
 
-        println("print_project_ext - project.rootProject.properties.springBootVersion: [${project.rootProject.properties.hasProperty("springBootVersion")}]")
-        println("print_project_ext - project.rootProject.properties.springSecurityVersion: [${project.rootProject.properties.hasProperty("springSecurityVersion")}]")
+        log.debug("print_project_ext - project.rootProject.properties.springBootVersion: [${project.rootProject.properties.hasProperty("springBootVersion")}]")
+        log.debug("print_project_ext - project.rootProject.properties.springSecurityVersion: [${project.rootProject.properties.hasProperty("springSecurityVersion")}]")
 
-        println("print_project_ext - project.rootProject.name: [${project.rootProject.name}]")
+        log.debug("print_project_ext - project.rootProject.name: [${project.rootProject.name}]")
         ExtraPropertiesExtension extraPropertiesExtension2 = project.rootProject.extensions.findByType(ExtraPropertiesExtension.class)
 //        ExtraPropertiesExtension extraPropertiesExtension2 = project.extensions.getExtraProperties()
 ////        ExtraPropertiesExtension extraPropertiesExtension2 = project.extensions.findByName("ext")
-        println("print_project_ext - extraPropertiesExtension2.springBootVersion: [${extraPropertiesExtension2.has("springBootVersion")}]")
-        println("print_project_ext - extraPropertiesExtension2.springSecurityVersion: [${extraPropertiesExtension2.has("springSecurityVersion")}]")
-        println("print_project_ext - extraPropertiesExtension2.platformSnapshotUri: [${extraPropertiesExtension2.has("platformSnapshotUri")}]")
+        log.debug("print_project_ext - extraPropertiesExtension2.springBootVersion: [${extraPropertiesExtension2.has("springBootVersion")}]")
+        log.debug("print_project_ext - extraPropertiesExtension2.springSecurityVersion: [${extraPropertiesExtension2.has("springSecurityVersion")}]")
+        log.debug("print_project_ext - extraPropertiesExtension2.platformSnapshotUri: [${extraPropertiesExtension2.has("platformSnapshotUri")}]")
 
-        println("print_project_ext - project.rootProject.properties.springBootVersion: [${project.rootProject.properties.hasProperty("springBootVersion")}]")
-        println("print_project_ext - project.rootProject.properties.springSecurityVersion: [${project.rootProject.properties.hasProperty("springSecurityVersion")}]")
+        log.debug("print_project_ext - project.rootProject.properties.springBootVersion: [${project.rootProject.properties.hasProperty("springBootVersion")}]")
+        log.debug("print_project_ext - project.rootProject.properties.springSecurityVersion: [${project.rootProject.properties.hasProperty("springSecurityVersion")}]")
 
-        println("print_project_ext - project.rootProject.properties[springBootVersion]: [${project.rootProject.properties["springBootVersion"]}]")
+        log.debug("print_project_ext - project.rootProject.properties[springBootVersion]: [${project.rootProject.properties["springBootVersion"]}]")
 
-        println("print_project_ext - project.rootProject.properties.springBootVersion: [${project.rootProject.properties.hasProperty("springBootVersion")}]")
-        println("print_project_ext - project.rootProject.properties.springSecurityVersion: [${project.rootProject.properties.hasProperty("springSecurityVersion")}]")
+        log.debug("print_project_ext - project.rootProject.properties.springBootVersion: [${project.rootProject.properties.hasProperty("springBootVersion")}]")
+        log.debug("print_project_ext - project.rootProject.properties.springSecurityVersion: [${project.rootProject.properties.hasProperty("springSecurityVersion")}]")
 
         Gradle gradle = project.rootProject.gradle
         if (gradle instanceof ExtensionAware) {
             ExtensionAware gradleExtensions = (ExtensionAware) gradle;
-            println("print_project_ext - gradleExtensions.extensions.extraProperties.springBootVersion: [${gradleExtensions.extensions.extraProperties.has("springBootVersion")}]")
-            println("print_project_ext - gradleExtensions.properties.springBootVersion: [${gradleExtensions.properties.hasProperty("springBootVersion")}]")
+            log.debug("print_project_ext - gradleExtensions.extensions.extraProperties.springBootVersion: [${gradleExtensions.extensions.extraProperties.has("springBootVersion")}]")
+            log.debug("print_project_ext - gradleExtensions.properties.springBootVersion: [${gradleExtensions.properties.hasProperty("springBootVersion")}]")
         }
 
         Gradle gradle1 = project.gradle
         if (gradle1 instanceof ExtensionAware) {
             ExtensionAware gradleExtensions = (ExtensionAware) gradle1;
-            println("print_project_ext - gradleExtensions.extensions.extraProperties.springBootVersion: [${gradleExtensions.extensions.extraProperties.has("springBootVersion")}]")
-            println("print_project_ext - gradleExtensions.properties.springBootVersion: [${gradleExtensions.properties.hasProperty("springBootVersion")}]")
+            log.debug("print_project_ext - gradleExtensions.extensions.extraProperties.springBootVersion: [${gradleExtensions.extensions.extraProperties.has("springBootVersion")}]")
+            log.debug("print_project_ext - gradleExtensions.properties.springBootVersion: [${gradleExtensions.properties.hasProperty("springBootVersion")}]")
         }
 
     }
 
     void print_project_version(Project project) {
+        Logger log = project.getLogger();
         //DependencyManagementPluginAction
 //        project.plugins.withType(SpringBootPlugin) {
             String implVersion = DependencyManagementPluginAction.class.package.implementationVersion
-            println("print_project_version - implVersion: [${implVersion}]")
+            log.debug("print_project_version - implVersion: [${implVersion}]")
 //        }
     }
 
