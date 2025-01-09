@@ -5,7 +5,7 @@ Another project like `poc-gradle-plugin-consumer` is a consumer of this plugin.
 - https://github.com/siukatech/poc-gradle-plugin-consumer  
 
 The `react-backend-` projects will be applied with this plugin as well later, e.g. 
-- react-backend-parent, https://github.com/siukatech/poc-react-backend-parent
+- react-backend-core, https://github.com/siukatech/poc-react-backend-core
 - react-backend-app, https://github.com/siukatech/poc-react-backend-app
 - and etc  
 
